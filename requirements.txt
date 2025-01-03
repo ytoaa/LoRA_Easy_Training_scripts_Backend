@@ -9,3 +9,4 @@ scipy
 came-pytorch
 pytorch_optimizer==3.0.0
 lycoris-lora==3.0.0.post1
+prodigy-plus-schedule-free
