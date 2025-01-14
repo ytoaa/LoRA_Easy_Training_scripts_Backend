@@ -3,6 +3,7 @@ uvicorn[standard]
 requests
 dadaptation
 wandb
+triton
 pyngrok
 pycloudflared
 scipy
