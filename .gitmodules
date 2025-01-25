@@ -1,8 +1,8 @@
-[submodule "sd_scripts"]
-	path = sd_scripts
-	url = https://github.com/kohya-ss/sd-scripts
-	branch = main
 [submodule "LyCORIS"]
 	path = LyCORIS
 	url = https://github.com/KohakuBlueleaf/LyCORIS
 	branch = main
+[submodule "sd-scripts"]
+	path = sd-scripts
+	branch = main
+	url = https://github.com/kohya-ss/sd-scripts
