@@ -87,12 +87,14 @@ def setup_venv(venv_pip):
         subprocess.check_call("venv\\Scripts\\python.exe ..\\fix_torch.py")
     subprocess.check_call(
         f"{venv_pip} install -U xformers==0.0.28.post2 --index-url https://download.pytorch.org/whl/cu124",
-        shell=PLATFORM == "linux",
+        shell=PLATFORM == "linux"
+    '''
     )
     subprocess.check_call(
         f"{venv_pip} install -U onnxruntime-gpu",
         shell=PLATFORM == "linux",
     )
+    '''
     subprocess.check_call(f"{venv_pip} install -U -r requirements.txt", shell=PLATFORM == "linux")
     subprocess.check_call(f"{venv_pip} install -U ../custom_scheduler/.", shell=PLATFORM == "linux")
     subprocess.check_call(f"{venv_pip} install -U -r ../requirements.txt", shell=PLATFORM == "linux")
