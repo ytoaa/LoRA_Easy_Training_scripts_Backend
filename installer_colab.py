@@ -80,13 +80,17 @@ def setup_accelerate(platform: str) -> None:
 
 def setup_venv(venv_pip):
     subprocess.check_call(
-        f"{venv_pip} install -U torch==2.5.0 torchvision==0.20.0 'numpy<2' onnxruntime-gpu --index-url https://download.pytorch.org/whl/cu124",
+        f"{venv_pip} install -U torch==2.5.0 torchvision==0.20.0 'numpy<2' --index-url https://download.pytorch.org/whl/cu124",
         shell=PLATFORM == "linux",
     )
     if PLATFORM == "windows":
         subprocess.check_call("venv\\Scripts\\python.exe ..\\fix_torch.py")
     subprocess.check_call(
         f"{venv_pip} install -U xformers==0.0.28.post2 --index-url https://download.pytorch.org/whl/cu124",
+        shell=PLATFORM == "linux",
+    )
+    subprocess.check_call(
+        f"{venv_pip} install -U onnxruntime-gpu",
         shell=PLATFORM == "linux",
     )
     subprocess.check_call(f"{venv_pip} install -U -r requirements.txt", shell=PLATFORM == "linux")
