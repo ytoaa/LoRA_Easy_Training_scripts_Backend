@@ -80,7 +80,7 @@ def setup_accelerate(platform: str) -> None:
 
 def setup_venv(venv_pip):
     subprocess.check_call(
-        f"{venv_pip} install -U 'numpy<2' torch==2.6.9 torchvision --index-url https://download.pytorch.org/whl/cu124",
+        f"{venv_pip} install -U 'numpy<2' torch==2.6.0 torchvision --index-url https://download.pytorch.org/whl/cu124",
         shell=PLATFORM == "linux",
     )
     if PLATFORM == "windows":
