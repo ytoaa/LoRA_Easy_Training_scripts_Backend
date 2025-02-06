@@ -7,8 +7,10 @@ pyngrok
 pycloudflared
 scipy
 came-pytorch
-lycoris-lora==3.0.1.dev10
-pytorch_optimizer==3.1.2
+#lycoris-lora==3.0.1.dev10
+lycoris-lora
+#pytorch_optimizer==3.1.2
+pytorch_optimizer
 wheel
 # fork
 # triton
