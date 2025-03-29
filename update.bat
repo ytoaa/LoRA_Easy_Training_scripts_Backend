@@ -1,10 +1,10 @@
 @echo off
 setlocal enabledelayedexpansion
 
-REM í˜„ì¬ ë¸Œëœì¹˜ë¥¼ ì €ì¥
+REM ÇöÀç ºê·£Ä¡¸¦ ÀúÀå
 for /f %%b in ('git branch --show-current') do set CURRENT_BRANCH=%%b
 
-REM ëª¨ë“  ë¸Œëœì¹˜ ëª©ë¡ ê°€ì ¸ì˜¤ê¸°
+REM ¸ğµç ºê·£Ä¡ ¸ñ·Ï °¡Á®¿À±â
 for /f "tokens=*" %%b in ('git branch --format "%%(refname:short)"') do (
     set BRANCH=%%b
     echo ==============================
@@ -12,20 +12,20 @@ for /f "tokens=*" %%b in ('git branch --format "%%(refname:short)"') do (
     echo ==============================
     git checkout !BRANCH!
 
-    REM ì„œë¸Œëª¨ë“ˆ ì´ˆê¸°í™” ë° ì—…ë°ì´íŠ¸
+    REM ¼­ºê¸ğµâ ÃÊ±âÈ­ ¹× ¾÷µ¥ÀÌÆ®
     git submodule update --init --recursive
     git submodule update --remote --recursive
 
-    REM ì„œë¸Œëª¨ë“ˆ ë³€ê²½ ì‚¬í•­ ì»¤ë°‹
+    REM ¼­ºê¸ğµâ º¯°æ »çÇ× Ä¿¹Ô
     git add .
     git commit -m "Update submodules to latest version on !BRANCH!"
 
-    REM ì›ê²© ì €ì¥ì†Œë¡œ í‘¸ì‹œ
+    REM ¿ø°İ ÀúÀå¼Ò·Î Çª½Ã
     git push origin !BRANCH!
 )
 
-REM ì›ë˜ ë¸Œëœì¹˜ë¡œ ëŒì•„ì˜¤ê¸°
+REM ¿ø·¡ ºê·£Ä¡·Î µ¹¾Æ¿À±â
 git checkout %CURRENT_BRANCH%
 
-echo ì‘ì—… ì™„ë£Œ!
+echo ÀÛ¾÷ ¿Ï·á!
 pause
