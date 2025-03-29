@@ -24,10 +24,11 @@ for /f %%s in ('git submodule foreach --quiet git rev-parse --show-toplevel') do
         for /f "tokens=3" %%r in ('git remote show origin ^| findstr /C:"HEAD branch"') do set DEFAULT_BRANCH=%%r
         REM 기본 브랜치가 확인되었으면 그 브랜치로 체크아웃
         git checkout %DEFAULT_BRANCH%
+        set SUBMODULE_BRANCH=%DEFAULT_BRANCH%
     )
 
     REM 해당 브랜치로 pull
-    git pull origin %DEFAULT_BRANCH%
+    git pull origin %SUBMODULE_BRANCH%
     cd ..
 )
 
@@ -48,7 +49,12 @@ for /f %%s in ('git submodule foreach --quiet git rev-parse --show-toplevel') do
     git remote -v | findstr /C:"origin" | findstr /V /C:"kohya-ss" > nul
     if %ERRORLEVEL%==0 (
         echo "서브모듈 푸시: %%s"
-        git push origin %SUBMODULE_BRANCH%
+        if "%SUBMODULE_BRANCH%"=="" (
+            REM HEAD 상태에서 푸시
+            git push origin HEAD:%DEFAULT_BRANCH%
+        ) else (
+            git push origin %SUBMODULE_BRANCH%
+        )
     ) else (
         echo "푸시 권한이 없는 서브모듈: %%s (푸시 생략)"
     )
