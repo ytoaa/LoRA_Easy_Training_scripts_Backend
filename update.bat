@@ -21,11 +21,13 @@ for /f %%s in ('git submodule foreach --quiet git rev-parse --show-toplevel') do
 
     if "%SUBMODULE_BRANCH%"=="" (
         echo "서브모듈이 detached 상태입니다. 기본 브랜치 확인 중..."
-        for /f "tokens=3" %%r in ('git remote show origin ^| findstr /C:"HEAD branch"') do set SUBMODULE_BRANCH=%%r
-        git checkout %SUBMODULE_BRANCH%
+        for /f "tokens=3" %%r in ('git remote show origin ^| findstr /C:"HEAD branch"') do set DEFAULT_BRANCH=%%r
+        REM 기본 브랜치가 확인되었으면 그 브랜치로 체크아웃
+        git checkout %DEFAULT_BRANCH%
     )
 
-    git pull origin %SUBMODULE_BRANCH%
+    REM 해당 브랜치로 pull
+    git pull origin %DEFAULT_BRANCH%
     cd ..
 )
 
