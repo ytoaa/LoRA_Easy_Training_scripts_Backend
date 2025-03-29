@@ -16,14 +16,13 @@ for /f %%s in ('git submodule foreach --quiet git rev-parse --show-toplevel') do
     cd %%s
     echo "서브모듈: %%s 업데이트 중..."
     
-    REM 서브모듈의 현재 브랜치 확인
-    for /f "delims=" %%b in ('git rev-parse --abbrev-ref HEAD') do set SUBMODULE_BRANCH=%%b
-    
-    REM detached HEAD 상태라면, 기본 원격 브랜치로 체크아웃
-    if "%SUBMODULE_BRANCH%"=="HEAD" (
-        echo "서브모듈이 detached 상태입니다. 원격 브랜치로 이동..."
-        for /f "delims=" %%r in ('git remote show origin ^| findstr "HEAD branch"') do set DEFAULT_BRANCH=%%r
-        git checkout %DEFAULT_BRANCH%
+    REM 서브모듈이 HEAD detached 상태인지 확인
+    for /f "delims=" %%b in ('git symbolic-ref --short HEAD 2^>nul') do set SUBMODULE_BRANCH=%%b
+
+    if "%SUBMODULE_BRANCH%"=="" (
+        echo "서브모듈이 detached 상태입니다. 기본 브랜치 확인 중..."
+        for /f "tokens=3" %%r in ('git remote show origin ^| findstr /C:"HEAD branch"') do set SUBMODULE_BRANCH=%%r
+        git checkout %SUBMODULE_BRANCH%
     )
 
     git pull origin %SUBMODULE_BRANCH%
@@ -42,7 +41,16 @@ git push origin %BRANCH_NAME%
 REM 각 서브모듈도 푸시
 for /f %%s in ('git submodule foreach --quiet git rev-parse --show-toplevel') do (
     cd %%s
-    git push origin %SUBMODULE_BRANCH%
+
+    REM 해당 서브모듈이 푸시 가능한 저장소인지 확인
+    git remote -v | findstr /C:"origin" | findstr /V /C:"kohya-ss" > nul
+    if %ERRORLEVEL%==0 (
+        echo "서브모듈 푸시: %%s"
+        git push origin %SUBMODULE_BRANCH%
+    ) else (
+        echo "푸시 권한이 없는 서브모듈: %%s (푸시 생략)"
+    )
+
     cd ..
 )
 
